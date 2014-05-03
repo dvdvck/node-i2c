@@ -100,12 +100,14 @@ Handle<Value> ReadByte(const Arguments& args) {
   Local<Value> data; 
   Local<Value> err = Local<Value>::New(Null());
 
-  int8_t res = i2c_smbus_read_byte(fd);
+  int16_t res = i2c_smbus_read_byte(fd);
+  int8_t unsigned ures;
 
   if (res == -1) { 
     err = Exception::Error(String::New("Cannot read device"));
   } else {
-    data = Integer::New(res);
+    ures = (int8_t unsigned)res;
+    data = Integer::New(ures);
   }
 
   if (args[0]->IsFunction()) {
